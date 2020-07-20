@@ -1,8 +1,7 @@
 from pycocotools.coco import COCO
-
 import numpy as np
-
 import matplotlib.pyplot as plt
+
 
 from tutorial import tutorial_1, tutorial_2
 
@@ -25,8 +24,15 @@ def process_to_mask(img):
             # annToMask return a binary image
             mask = np.maximum(coco.annToMask(anns[i]) * pixel_value, mask)
 
-    plt.figure(img['id'])
+    img_name = str(img['id']).zfill(12)
+    plt.figure(img_name)
+    # plt.imshow(mask)
+    plt.subplot(1, 2, 1)
     plt.imshow(mask)
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(mask)
+
     plt.show()
 
 
@@ -44,5 +50,5 @@ if __name__ == '__main__':
 
     dataset = tutorial_2.filter_classes_combined(filter_classes, coco)
 
-    for _, mask in enumerate(dataset):
-        process_to_mask(mask)
+    for _, image in enumerate(dataset):
+        process_to_mask(image)

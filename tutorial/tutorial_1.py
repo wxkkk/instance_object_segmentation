@@ -1,6 +1,4 @@
 from pycocotools.coco import COCO
-from pycocotools.mask import decode, encode, merge
-
 import numpy as np
 import skimage.io as io
 
