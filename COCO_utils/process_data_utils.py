@@ -87,6 +87,7 @@ def show_one_by_one(coco):
 
 def save_to_h5(coco, path):
     dataset = filter_classes_combined(filter_classes, coco)
+    dataset = dataset[0: 100]
     data_arr = np.zeros((len(dataset), 256, 256, 3), dtype=np.float64)
     mask_arr = np.zeros((len(dataset), 256, 256), dtype=np.uint8)
 
@@ -109,6 +110,14 @@ def save_to_h5(coco, path):
     print(len(dataset))
 
 
+def read_h5(path):
+    with h5py.File(path, 'r') as f:
+        data = np.array(f['data'])
+        masks = np.array(f['mask'])
+
+    return data, masks
+
+
 if __name__ == '__main__':
     data_dir = 'E:\extracted_data\COCO'
     data_type = 'train2017'
@@ -116,10 +125,17 @@ if __name__ == '__main__':
 
     filter_classes = ['car', 'truck', 'bus', 'motorcycle']
 
-    h5_path = '../data/test.h5'
+    h5_path = '../data/train_100.h5'
 
+    # load COCO dataset
     coco = COCO(ann_file)
 
+    # show original images and masks
     # show_one_by_one(coco)
 
+    # save the original dataset into h5
     save_to_h5(coco, h5_path)
+
+    # read h5 file
+    # data, masks = read_h5(h5_path)
+    # print(data.shape, masks.shape)
