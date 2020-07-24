@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import h5py
 import cv2
+from tqdm import tqdm
 
 '''
 procedure:
@@ -87,11 +88,11 @@ def show_one_by_one(coco):
 
 def save_to_h5(coco, path):
     dataset = filter_classes_combined(filter_classes, coco)
-    dataset = dataset[0: 2000]
+    dataset = dataset[0: 5000]
     data_arr = np.zeros((len(dataset), 256, 256, 3), dtype=np.float64)
     mask_arr = np.zeros((len(dataset), 256, 256), dtype=np.uint8)
 
-    for i, image in enumerate(dataset):
+    for i, image in enumerate(tqdm(dataset)):
         img_name = str(image['id']).zfill(12)
 
         img_name = '{}/images/{}/{}.jpg'.format(data_dir, data_type, img_name)
@@ -99,7 +100,7 @@ def save_to_h5(coco, path):
 
         mask = process_to_mask(coco, image)
 
-        print(original_img.shape)
+        # print(original_img.shape)
         data_arr[i] = cv2.resize(original_img, (256, 256))
         mask_arr[i] = cv2.resize(mask, (256, 256))
 
@@ -125,7 +126,7 @@ if __name__ == '__main__':
 
     filter_classes = ['car', 'truck', 'bus', 'motorcycle']
 
-    h5_path = '../data/train_2000.h5'
+    h5_path = '../data/train_5000.h5'
 
     # load COCO dataset
     coco = COCO(ann_file)
