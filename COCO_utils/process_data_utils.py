@@ -87,7 +87,7 @@ def show_one_by_one(coco):
 
 def save_to_h5(coco, path):
     dataset = filter_classes_combined(filter_classes, coco)
-    dataset = dataset[0: 100]
+    dataset = dataset[0: 2000]
     data_arr = np.zeros((len(dataset), 256, 256, 3), dtype=np.float64)
     mask_arr = np.zeros((len(dataset), 256, 256), dtype=np.uint8)
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     filter_classes = ['car', 'truck', 'bus', 'motorcycle']
 
-    h5_path = '../data/train_100.h5'
+    h5_path = '../data/train_2000.h5'
 
     # load COCO dataset
     coco = COCO(ann_file)
