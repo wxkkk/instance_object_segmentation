@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import h5py
 import cv2
 from tqdm import tqdm
+from src import constants
 
 '''
 procedure:
@@ -88,9 +89,9 @@ def show_one_by_one(coco):
 
 def save_to_h5(coco, path):
     dataset = filter_classes_combined(filter_classes, coco)
-    dataset = dataset[0: 5000]
-    data_arr = np.zeros((len(dataset), 256, 256, 3), dtype=np.float64)
-    mask_arr = np.zeros((len(dataset), 256, 256), dtype=np.uint8)
+    # dataset = dataset[0: 5000]
+    data_arr = np.zeros((len(dataset), constants.HEIGHT, constants.WIDTH, constants.CHANNELS), dtype=np.float64)
+    mask_arr = np.zeros((len(dataset), constants.HEIGHT, constants.WIDTH), dtype=np.uint8)
 
     for i, image in enumerate(tqdm(dataset)):
         img_name = str(image['id']).zfill(12)
@@ -101,14 +102,14 @@ def save_to_h5(coco, path):
         mask = process_to_mask(coco, image)
 
         # print(original_img.shape)
-        data_arr[i] = cv2.resize(original_img, (256, 256))
-        mask_arr[i] = cv2.resize(mask, (256, 256))
+        data_arr[i] = cv2.resize(original_img, (constants.HEIGHT, constants.WIDTH))
+        mask_arr[i] = cv2.resize(mask, (constants.HEIGHT, constants.WIDTH))
 
     with h5py.File(path, 'w') as f:
         f['data'] = data_arr
         f['mask'] = mask_arr
 
-    print(len(dataset))
+    # print(len(dataset))
 
 
 def read_h5(path):
@@ -124,9 +125,9 @@ if __name__ == '__main__':
     data_type = 'train2017'
     ann_file = '{}/annotations/instances_{}.json'.format(data_dir, data_type)
 
-    filter_classes = ['car', 'truck', 'bus', 'motorcycle']
+    filter_classes = constants.CATE_LIST
 
-    h5_path = '../data/train_5000.h5'
+    h5_path = '../data/train_car_truck_bus_128_128.h5'
 
     # load COCO dataset
     coco = COCO(ann_file)

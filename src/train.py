@@ -5,7 +5,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoa
 from src import constants, basic_U_net_model
 from COCO_utils import process_data_utils
 
-train_data_path = '../data/train_2000.h5'
+train_data_path = '../data/train_car_truck_bus_128_128.h5'
 
 if __name__ == '__main__':
     train_images, train_masks = process_data_utils.read_h5(train_data_path)
@@ -23,8 +23,8 @@ if __name__ == '__main__':
     log_path = r'..\log\basic_U_net_log\{}'.format(cur_time)
 
     model_saver = ModelCheckpoint(
-        filepath=model_path
-        # save_best_only=True
+        filepath=model_path,
+        save_best_only=True
     )
 
     early_stopper = EarlyStopping(
@@ -44,6 +44,6 @@ if __name__ == '__main__':
         validation_split=0.1,
         verbose=2,
         epochs=100,
-        batch_size=64,
+        batch_size=128,
         callbacks=[model_saver, early_stopper, tensor_board]
     )

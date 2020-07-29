@@ -40,8 +40,8 @@ if __name__ == '__main__':
     cat_ids = coco.getCatIds()
     cats = coco.loadCats(cat_ids)
 
-    dataset = filter_classes_combined(filter_classes, coco)
+    dataset = filter_classes_combined(filter_classes[3:4], coco)
 
     print('Number of images containing the filter classes:', len(dataset))
 
-    print(dataset[0]['file_name'])
+    # print(dataset[0]['file_name'])
